@@ -1,6 +1,6 @@
 package com.computershop.models;
 
-import com.computershop.models.enums.Diagonal;
+import com.computershop.models.enums.TypeDesktops;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,38 +9,37 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Monitor {
+public class Desktops {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @NotNull
     @Column(name = "series_num")
     private int series_num;
-
     @NotBlank
     private String manufacturer;
-
     @Positive(message = "Не может быть отрицательным")
     private double cost;
-
     @Positive(message = "Не может быть отрицательным")
     private int quantity;
-    private Diagonal diagonal;
+    @Column(name = "type_desktops")
+    private TypeDesktops type_desktops;
 
-    public Monitor(@NotNull int series_num,
-                   @NotBlank String manufacturer,
-                   @Positive(message = "Не может быть отрицательным") double cost,
-                   @Positive(message = "Не может быть отрицательным") int quantity,
-                   @NotNull Diagonal diagonal) {
+
+    public Desktops(@NotNull int series_num,
+                    @NotBlank String manufacturer,
+                    @Positive(message = "Не может быть отрицательным") double cost,
+                    @Positive(message = "Не может быть отрицательным") int quantity,
+                    @NotNull TypeDesktops typeDesktops) {
         this.series_num = series_num;
         this.manufacturer = manufacturer;
         this.cost = cost;
         this.quantity = quantity;
-        this.diagonal = diagonal;
+        this.type_desktops = typeDesktops;
     }
 
-    public Monitor() {
+    public Desktops() {
     }
+
 }

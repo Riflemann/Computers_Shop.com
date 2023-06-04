@@ -62,7 +62,7 @@ public class MonitorsRepositoryImpl implements MonitorsRepository {
             SqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("quantity", monitor.getQuantity() + result.getInt("quantity"))
                     .addValue("diagonal", monitor.getDiagonal().toString())
-                    .addValue("seriesNum", monitor.getSeriesNum())
+                    .addValue("seriesNum", monitor.getSeries_num())
                     .addValue("manufacturer", monitor.getManufacturer())
                     .addValue("cost", monitor.getCost());
 
@@ -73,7 +73,7 @@ public class MonitorsRepositoryImpl implements MonitorsRepository {
                     "insert into Laptops (diagonal, series_num, manufacturer, cost, quantity) " +
                             "values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     monitor.getDiagonal().toString(),
-                    monitor.getSeriesNum(),
+                    monitor.getSeries_num(),
                     monitor.getManufacturer(),
                     monitor.getManufacturer(),
                     monitor.getCost(),
@@ -91,7 +91,7 @@ public class MonitorsRepositoryImpl implements MonitorsRepository {
                 "and cost = :cost ";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("diagonal", monitor.getDiagonal().toString())
-                .addValue("seriesNum", monitor.getSeriesNum())
+                .addValue("seriesNum", monitor.getSeries_num())
                 .addValue("manufacturer", monitor.getManufacturer())
                 .addValue("cost", monitor.getCost());
         SqlRowSet sqlRowSet = namedParameterJdbcTemplate.queryForRowSet(sql, namedParameters);

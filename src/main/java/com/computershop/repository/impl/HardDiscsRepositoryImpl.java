@@ -61,7 +61,7 @@ public class HardDiscsRepositoryImpl implements HardDiscsRepository {
             SqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("quantity", hardDisc.getQuantity() + result.getInt("quantity"))
                     .addValue("hard_drive_volumes", hardDisc.getHardDriveVolumes().toString())
-                    .addValue("seriesNum", hardDisc.getSeriesNum())
+                    .addValue("seriesNum", hardDisc.getSeries_num())
                     .addValue("manufacturer", hardDisc.getManufacturer())
                     .addValue("cost", hardDisc.getCost());
 
@@ -72,7 +72,7 @@ public class HardDiscsRepositoryImpl implements HardDiscsRepository {
                     "insert into Hard_discs (hard_drive_volumes, series_num, manufacturer, cost, quantity) " +
                             "values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     hardDisc.getHardDriveVolumes().toString(),
-                    hardDisc.getSeriesNum(),
+                    hardDisc.getSeries_num(),
                     hardDisc.getManufacturer(),
                     hardDisc.getManufacturer(),
                     hardDisc.getCost(),
@@ -90,7 +90,7 @@ public class HardDiscsRepositoryImpl implements HardDiscsRepository {
                 "and cost = :cost ";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("hardDriveVolumes", hardDisc.getHardDriveVolumes().toString())
-                .addValue("seriesNum", hardDisc.getSeriesNum())
+                .addValue("seriesNum", hardDisc.getSeries_num())
                 .addValue("manufacturer", hardDisc.getManufacturer())
                 .addValue("cost", hardDisc.getCost());
         SqlRowSet sqlRowSet = namedParameterJdbcTemplate.queryForRowSet(sql, namedParameters);

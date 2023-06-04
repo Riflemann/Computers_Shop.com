@@ -1,6 +1,5 @@
 package com.computershop.repository.impl;
 
-import com.computershop.models.HardDisc;
 import com.computershop.models.Laptop;
 import com.computershop.models.enums.Diagonal;
 import com.computershop.repository.LaptopsRepository;
@@ -62,7 +61,7 @@ public class LaptopsRepositoryImpl implements LaptopsRepository {
             SqlParameterSource namedParameters = new MapSqlParameterSource()
                     .addValue("quantity", laptop.getQuantity() + result.getInt("quantity"))
                     .addValue("diagonal", laptop.getDiagonal().toString())
-                    .addValue("seriesNum", laptop.getSeriesNum())
+                    .addValue("seriesNum", laptop.getSeries_num())
                     .addValue("manufacturer", laptop.getManufacturer())
                     .addValue("cost", laptop.getCost());
 
@@ -73,7 +72,7 @@ public class LaptopsRepositoryImpl implements LaptopsRepository {
                     "insert into Laptops (diagonal, series_num, manufacturer, cost, quantity) " +
                             "values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
                     laptop.getDiagonal().toString(),
-                    laptop.getSeriesNum(),
+                    laptop.getSeries_num(),
                     laptop.getManufacturer(),
                     laptop.getManufacturer(),
                     laptop.getCost(),
@@ -91,7 +90,7 @@ public class LaptopsRepositoryImpl implements LaptopsRepository {
                 "and cost = :cost ";
         SqlParameterSource namedParameters = new MapSqlParameterSource()
                 .addValue("diagonal", laptop.getDiagonal().toString())
-                .addValue("seriesNum", laptop.getSeriesNum())
+                .addValue("seriesNum", laptop.getSeries_num())
                 .addValue("manufacturer", laptop.getManufacturer())
                 .addValue("cost", laptop.getCost());
         SqlRowSet sqlRowSet = namedParameterJdbcTemplate.queryForRowSet(sql, namedParameters);
