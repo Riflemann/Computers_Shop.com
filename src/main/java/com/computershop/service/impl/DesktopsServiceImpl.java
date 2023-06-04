@@ -22,7 +22,7 @@ public class DesktopsServiceImpl implements DesktopsService {
     }
 
     @Override
-    public Desktops save(@RequestBody @Valid Desktops desktops) {
+    public Desktops save(Desktops desktops) {
         desktopsRepository.saveOrUpdateQuantity(desktops, entityManagerFactory);
         return desktops;
     }

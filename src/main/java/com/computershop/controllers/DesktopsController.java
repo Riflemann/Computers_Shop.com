@@ -25,8 +25,8 @@ public class DesktopsController {
 
 
     @Operation(
-            summary = "Вывод всех настольных компьютеров из базы данных ",
-            description = "Вывод всех настольных компьютеров из базы данных",
+            summary = "Получение всех настольных компьютеров из базы данных ",
+            description = "Получение всех настольных компьютеров из базы данных",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -44,8 +44,8 @@ public class DesktopsController {
     }
 
     @Operation(
-            summary = "Вывод настольного компьютера по индефикатору из базы данных ",
-            description = "Вывод настольного компьютера по индефикатору из базы данных",
+            summary = "Получение настольного компьютера по индефикатору из базы данных ",
+            description = "Получение настольного компьютера по индефикатору из базы данных",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -63,8 +63,8 @@ public class DesktopsController {
     }
 
     @Operation(
-            summary = "Сохранение настольного компьютера по индефикатору из базы данных ",
-            description = "Сохранение настольного компьютера по индефикатору из базы данных",
+            summary = "Сохранение настольного компьютера в базе данных ",
+            description = "Сохранение настольного компьютера в базе данных ",
             responses = {
                     @ApiResponse(
                             description = "Success",
@@ -81,7 +81,7 @@ public class DesktopsController {
                                                 @RequestParam(name = "Производитель") String manufacturer,
                                                 @RequestParam(name = "Цена") double cost,
                                                 @RequestParam(name = "Количество") int quantity,
-                                                @RequestParam(name = "Форм-фактор") TypeDesktops type_desktops) {
+                                                @RequestParam(name = "hardDiscVolume") TypeDesktops type_desktops) {
 
         return ResponseEntity.ok(desktopsService.save(new Desktops(series_num,
                                                                     manufacturer,
