@@ -28,17 +28,17 @@ public interface LaptopsRepository extends JpaRepository<Laptop, Integer> {
                     h.series_num = :seriesNum and \
                     h.manufacturer = :manufacturer and \
                     h.cost = :cost""");
-            query.setParameter("hardDriveVolumes", laptop.getDiagonal());
+            query.setParameter("diagonal", laptop.getDiagonal());
             query.setParameter("seriesNum", laptop.getSeries_num());
             query.setParameter("manufacturer", laptop.getManufacturer());
             query.setParameter("cost", laptop.getCost());
 
-            List<Desktops> resultList = query.getResultList();
+            List<Laptop> resultList = query.getResultList();
 
             if (!resultList.isEmpty()) {
-                Desktops existingHardDrive = resultList.get(0);
-                existingHardDrive.setQuantity(existingHardDrive.getQuantity() + laptop.getQuantity());
-                entityManager.merge(existingHardDrive);
+                Laptop existingLaptop = resultList.get(0);
+                existingLaptop.setQuantity(existingLaptop.getQuantity() + laptop.getQuantity());
+                entityManager.merge(existingLaptop);
             } else {
                 entityManager.persist(laptop);
             }

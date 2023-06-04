@@ -1,6 +1,5 @@
 package com.computershop.controllers;
 
-import com.computershop.models.HardDisc;
 import com.computershop.models.Laptop;
 import com.computershop.models.enums.Diagonal;
 import com.computershop.service.LaptopsService;

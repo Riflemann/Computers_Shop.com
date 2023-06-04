@@ -35,12 +35,12 @@ public interface HardDiscsRepository extends JpaRepository<HardDisc, Integer> {
             query.setParameter("manufacturer", hardDisc.getManufacturer());
             query.setParameter("cost", hardDisc.getCost());
 
-            List<Desktops> resultList = query.getResultList();
+            List<HardDisc> resultList = query.getResultList();
 
             if (!resultList.isEmpty()) {
-                Desktops existingHardDrive = resultList.get(0);
-                existingHardDrive.setQuantity(existingHardDrive.getQuantity() + hardDisc.getQuantity());
-                entityManager.merge(existingHardDrive);
+                HardDisc existingHardDisc = resultList.get(0);
+                existingHardDisc.setQuantity(existingHardDisc.getQuantity() + hardDisc.getQuantity());
+                entityManager.merge(existingHardDisc);
             } else {
                 entityManager.persist(hardDisc);
             }
