@@ -9,14 +9,35 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-
+/**
+ * Интерфейс DesktopsRepository предоставляет методы для выполнения операций с объектами Desktops в базе данных.
+ *
+ * @author [Данилов Константин]
+ */
 public interface DesktopsRepository extends JpaRepository<Desktops, Integer> {
 
-
+    /**
+     * Метод edit позволяет изменить значения полей объекта Desktops в базе данных по его идентификатору.
+     *
+     * @param typeDesktops тип настольного компьютера
+     * @param seriesNum серийный номер настольного компьютера
+     * @param manufacturer производитель настольного компьютера
+     * @param cost стоимость настольного компьютера
+     * @param quantity количество настольных компьютеров
+     * @param id идентификатор настольного компьютера
+     * @throws RuntimeException если возникает ошибка при выполнении операции
+     */
     @Transactional
     @org.springframework.data.jpa.repository.Query("update Desktops d set d.type_desktops = :typeDesktops, d.series_num = :seriesNum, d.manufacturer = :manufacturer, d.cost = :cost, d.quantity = :quantity where d.id = :id")
     void edit(TypeDesktops typeDesktops, int seriesNum, String manufacturer, double cost, int quantity, String id);
 
+    /**
+     * Метод saveOrUpdateQuantity позволяет сохранить или обновить объект Desktops в базе данных и увеличить количество настольных компьютеров в базе данных, если объект уже существует.
+     *
+     * @param desktops объект Desktops, который нужно сохранить или обновить
+     * @param entityManagerFactory объект EntityManagerFactory, используемый для создания EntityManager
+     * @throws RuntimeException если возникает ошибка при выполнении операции
+     */
     @Transactional
     default void saveOrUpdateQuantity (Desktops desktops, EntityManagerFactory entityManagerFactory) {
         EntityManager entityManager = null;
