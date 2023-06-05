@@ -1,9 +1,11 @@
 package com.computershop.repository;
 
 import com.computershop.models.Desktops;
+import com.computershop.models.Laptop;
 import com.computershop.models.enums.TypeDesktops;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,23 +47,20 @@ public interface DesktopsRepository extends JpaRepository<Desktops, Integer> {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            Query query = entityManager.createQuery("""
-                    SELECT h FROM Desktops h WHERE h.type_desktops = :typeDesktops and \
-                    h.series_num = :seriesNum and \
-                    h.manufacturer = :manufacturer and \
-                    h.cost = :cost""");
-            query.setParameter("typeDesktops", desktops.getType_desktops());
-            query.setParameter("seriesNum", desktops.getSeries_num());
-            query.setParameter("manufacturer", desktops.getManufacturer());
-            query.setParameter("cost", desktops.getCost());
-
-            List<Desktops> resultList = query.getResultList();
-
-            if (!resultList.isEmpty()) {
-                Desktops existingHardDrive = resultList.get(0);
-                existingHardDrive.setQuantity(existingHardDrive.getQuantity() + desktops.getQuantity());
-                entityManager.merge(existingHardDrive);
-            } else {
+            try {
+                Desktops result = entityManager.createQuery("""
+                                SELECT h FROM Desktops h WHERE h.type_desktops = :type_desktops and \
+                                h.series_num = :seriesNum and \
+                                h.manufacturer = :manufacturer and \
+                                h.cost = :cost""", Desktops.class)
+                        .setParameter("type_desktops", desktops.getType_desktops())
+                        .setParameter("seriesNum", desktops.getSeries_num())
+                        .setParameter("manufacturer", desktops.getManufacturer())
+                        .setParameter("cost", desktops.getCost())
+                        .getSingleResult();
+                result.setQuantity(result.getQuantity() + desktops.getQuantity());
+                entityManager.merge(result);
+            } catch (NoResultException e) {
                 entityManager.persist(desktops);
             }
 

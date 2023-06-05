@@ -2,9 +2,11 @@ package com.computershop.repository;
 
 import com.computershop.models.Desktops;
 import com.computershop.models.HardDisc;
+import com.computershop.models.Laptop;
 import com.computershop.models.enums.HardDriveVolumes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -50,23 +52,20 @@ public interface HardDiscsRepository extends JpaRepository<HardDisc, Integer> {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            Query query = entityManager.createQuery("""
-                    SELECT h FROM HardDisc h WHERE h.hardDriveVolumes = :hardDriveVolumes and \
-                    h.series_num = :seriesNum and \
-                    h.manufacturer = :manufacturer and \
-                    h.cost = :cost""");
-            query.setParameter("hardDriveVolumes", hardDisc.getHardDriveVolumes());
-            query.setParameter("seriesNum", hardDisc.getSeries_num());
-            query.setParameter("manufacturer", hardDisc.getManufacturer());
-            query.setParameter("cost", hardDisc.getCost());
-
-            List<HardDisc> resultList = query.getResultList();
-
-            if (!resultList.isEmpty()) {
-                HardDisc existingHardDisc = resultList.get(0);
-                existingHardDisc.setQuantity(existingHardDisc.getQuantity() + hardDisc.getQuantity());
-                entityManager.merge(existingHardDisc);
-            } else {
+            try {
+                HardDisc result = entityManager.createQuery("""
+                                SELECT h FROM HardDisc h WHERE h.hardDriveVolumes = :diagonal and \
+                                h.series_num = :seriesNum and \
+                                h.manufacturer = :manufacturer and \
+                                h.cost = :cost""", HardDisc.class)
+                        .setParameter("hardDriveVolumes", hardDisc.getHardDriveVolumes())
+                        .setParameter("seriesNum", hardDisc.getSeries_num())
+                        .setParameter("manufacturer", hardDisc.getManufacturer())
+                        .setParameter("cost", hardDisc.getCost())
+                        .getSingleResult();
+                result.setQuantity(result.getQuantity() + hardDisc.getQuantity());
+                entityManager.merge(result);
+            } catch (NoResultException e) {
                 entityManager.persist(hardDisc);
             }
 

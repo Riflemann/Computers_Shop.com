@@ -1,15 +1,12 @@
 package com.computershop.repository;
 
-import com.computershop.models.Desktops;
 import com.computershop.models.Laptop;
 import com.computershop.models.enums.Diagonal;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Query;
+import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 /**
  * Интерфейс репозитория для ноутбуков. Расширяет JpaRepository для сущности Laptop.
@@ -47,28 +44,25 @@ public interface LaptopsRepository extends JpaRepository<Laptop, Integer> {
         try {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
-
-            Query query = entityManager.createQuery("""
-                    SELECT h FROM Laptop h WHERE h.diagonal = :diagonal and \
-                    h.series_num = :seriesNum and \
-                    h.manufacturer = :manufacturer and \
-                    h.cost = :cost""");
-            query.setParameter("diagonal", laptop.getDiagonal());
-            query.setParameter("seriesNum", laptop.getSeries_num());
-            query.setParameter("manufacturer", laptop.getManufacturer());
-            query.setParameter("cost", laptop.getCost());
-
-            List<Laptop> resultList = query.getResultList();
-
-            if (!resultList.isEmpty()) {
-                Laptop existingLaptop = resultList.get(0);
-                existingLaptop.setQuantity(existingLaptop.getQuantity() + laptop.getQuantity());
-                entityManager.merge(existingLaptop);
-            } else {
+            try {
+                Laptop result = entityManager.createQuery("""
+                                SELECT h FROM Laptop h WHERE h.diagonal = :diagonal and \
+                                h.series_num = :seriesNum and \
+                                h.manufacturer = :manufacturer and \
+                                h.cost = :cost""", Laptop.class)
+                        .setParameter("diagonal", laptop.getDiagonal())
+                        .setParameter("seriesNum", laptop.getSeries_num())
+                        .setParameter("manufacturer", laptop.getManufacturer())
+                        .setParameter("cost", laptop.getCost())
+                        .getSingleResult();
+                result.setQuantity(result.getQuantity() + laptop.getQuantity());
+                entityManager.merge(result);
+            } catch (NoResultException e) {
                 entityManager.persist(laptop);
             }
 
             entityManager.getTransaction().commit();
+
         } catch (Exception e) {
             if (entityManager != null) {
                 entityManager.getTransaction().rollback();

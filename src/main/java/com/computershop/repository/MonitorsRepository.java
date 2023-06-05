@@ -1,9 +1,11 @@
 package com.computershop.repository;
 
+import com.computershop.models.Laptop;
 import com.computershop.models.Monitor;
 import com.computershop.models.enums.Diagonal;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,23 +49,20 @@ public interface MonitorsRepository extends JpaRepository<Monitor, Integer> {
             entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
 
-            Query query = entityManager.createQuery("""
-                    SELECT h FROM Monitor h WHERE h.diagonal = :diagonal and \
-                    h.series_num = :seriesNum and \
-                    h.manufacturer = :manufacturer and \
-                    h.cost = :cost""");
-            query.setParameter("diagonal", monitor.getDiagonal());
-            query.setParameter("seriesNum", monitor.getSeries_num());
-            query.setParameter("manufacturer", monitor.getManufacturer());
-            query.setParameter("cost", monitor.getCost());
-
-            List<Monitor> resultList = query.getResultList();
-
-            if (!resultList.isEmpty()) {
-                Monitor existingMonitor = resultList.get(0);
-                existingMonitor.setQuantity(existingMonitor.getQuantity() + monitor.getQuantity());
-                entityManager.merge(existingMonitor);
-            } else {
+            try {
+                Monitor result = entityManager.createQuery("""
+                                SELECT h FROM Laptop h WHERE h.diagonal = :diagonal and \
+                                h.series_num = :seriesNum and \
+                                h.manufacturer = :manufacturer and \
+                                h.cost = :cost""", Monitor.class)
+                        .setParameter("diagonal", monitor.getDiagonal())
+                        .setParameter("seriesNum", monitor.getSeries_num())
+                        .setParameter("manufacturer", monitor.getManufacturer())
+                        .setParameter("cost", monitor.getCost())
+                        .getSingleResult();
+                result.setQuantity(result.getQuantity() + monitor.getQuantity());
+                entityManager.merge(result);
+            } catch (NoResultException e) {
                 entityManager.persist(monitor);
             }
 
