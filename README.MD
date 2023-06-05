@@ -31,7 +31,7 @@ RESTful API для магизина по продаже компьютеров,
 Чтобы собрать и запустить проект, выполните следующие действия:
 
 + Клонировать репозиторий: git clone https://github.com/Riflemann/Computers_Shop.com.git
-+ Перейдите в каталог проекта: cd ComputerShop
++ Перейдите в каталог проекта: cd Computers_Shop.com
 + Собрать проект: mvn clean install
 + Запустить проект: mvn spring-boot:run
 
