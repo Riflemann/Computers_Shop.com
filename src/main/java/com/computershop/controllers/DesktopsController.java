@@ -76,7 +76,7 @@ public class DesktopsController {
                     )
             }
     )
-    @GetMapping(value = "save")
+    @PostMapping(value = "save")
     public ResponseEntity<Desktops> saveDesktop(@RequestParam(name = "Серийный номер") int series_num,
                                                 @RequestParam(name = "Производитель") String manufacturer,
                                                 @RequestParam(name = "Цена") double cost,
@@ -104,7 +104,7 @@ public class DesktopsController {
                     )
             }
     )
-    @GetMapping(value = "edit/{id}")
+    @PutMapping(value = "edit/{id}")
     public ResponseEntity<Desktops> editDesktop(@RequestBody @Valid Desktops desktops,
                                                 String id)  {
         return ResponseEntity.ok(desktopsService.edit(desktops, id));

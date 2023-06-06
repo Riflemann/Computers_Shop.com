@@ -76,7 +76,7 @@ public class LaptopsController {
                     )
             }
     )
-    @GetMapping(value = "save")
+    @PostMapping(value = "save")
     public ResponseEntity<Laptop> saveDesktop(@RequestParam(name = "Серийный номер") int series_num,
                                                 @RequestParam(name = "Производитель") String manufacturer,
                                                 @RequestParam(name = "Цена") double cost,
@@ -104,7 +104,7 @@ public class LaptopsController {
                     )
             }
     )
-    @GetMapping(value = "edit/{id}")
+    @PutMapping(value = "edit/{id}")
     public ResponseEntity<Laptop> editDesktop(@RequestBody @Valid Laptop laptop,
                                                 String id)  {
         return ResponseEntity.ok(laptopsService.edit(laptop, id));

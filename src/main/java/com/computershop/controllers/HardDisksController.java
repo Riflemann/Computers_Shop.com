@@ -76,7 +76,7 @@ public class HardDisksController {
                     )
             }
     )
-    @GetMapping(value = "save")
+    @PostMapping(value = "save")
     public ResponseEntity<HardDisc> saveDesktop(@RequestParam(name = "Серийный номер") int series_num,
                                                 @RequestParam(name = "Производитель") String manufacturer,
                                                 @RequestParam(name = "Цена") double cost,
@@ -104,7 +104,7 @@ public class HardDisksController {
                     )
             }
     )
-    @GetMapping(value = "edit/{id}")
+    @PutMapping(value = "edit/{id}")
     public ResponseEntity<HardDisc> editDesktop(@RequestBody @Valid HardDisc hardDisc,
                                                 String id)  {
         return ResponseEntity.ok(hardDiscsService.edit(hardDisc, id));

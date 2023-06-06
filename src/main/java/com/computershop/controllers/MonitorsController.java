@@ -77,7 +77,7 @@ public class MonitorsController {
                     )
             }
     )
-    @GetMapping(value = "save")
+    @PostMapping(value = "save")
     public ResponseEntity<Monitor> saveDesktop(@RequestParam(name = "Серийный номер") int series_num,
                                               @RequestParam(name = "Производитель") String manufacturer,
                                               @RequestParam(name = "Цена") double cost,
@@ -105,7 +105,7 @@ public class MonitorsController {
                     )
             }
     )
-    @GetMapping(value = "edit/{id}")
+    @PutMapping(value = "edit/{id}")
     public ResponseEntity<Monitor> editDesktop(@RequestBody @Valid Monitor monitor,
                                               String id)  {
         return ResponseEntity.ok(monitorsService.edit(monitor, id));
